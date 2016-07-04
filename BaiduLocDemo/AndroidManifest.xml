@@ -54,7 +54,7 @@
 
         <!-- meta-data需要写在application中 -->
         <activity
-            android:name="com.baidu.location.demo.MainActivity"
+            android:name="com.baidu.location.demo.LocationActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +62,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.baidu.location.demo.LocationActivity" >
+        <activity android:name="com.baidu.location.demo.MainActivity" >
         </activity>
         <activity android:name="com.baidu.location.demo.LocationOption"></activity>
         <activity android:name="com.baidu.location.demo.LocationFilter"></activity>

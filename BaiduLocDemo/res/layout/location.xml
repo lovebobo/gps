@@ -3,18 +3,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#0099ff"
      >
 <RelativeLayout 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/RelativeLayout1"
+    android:layout_centerInParent="true"
     android:gravity="center"
     >
       <Button
         android:id="@+id/addfence"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/radius"
         android:text="@string/startlocation"
+        android:textSize="25dp"
          />
       <Button
         android:id="@+id/getData"
@@ -33,7 +37,9 @@
         android:layout_weight="2.89"
         android:scrollbars="vertical"
         android:textColor="#ffffffff"
-        android:text=" "/>
+        android:text=" "
+        android:gravity="center"
+        />
     
   
 
