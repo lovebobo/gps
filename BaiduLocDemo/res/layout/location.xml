@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     >
+<RelativeLayout 
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/RelativeLayout1"
+    android:gravity="center"
+    >
+      <Button
+        android:id="@+id/addfence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startlocation"
+         />
+      <Button
+        android:id="@+id/getData"
+        android:layout_toRightOf="@id/addfence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/getdata" 
+        />
+</RelativeLayout>
+    <TextView
+        android:layout_below="@id/RelativeLayout1"
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2.89"
+        android:scrollbars="vertical"
+        android:textColor="#ffffffff"
+        android:text=" "/>
+    
+  
+
+</RelativeLayout>
