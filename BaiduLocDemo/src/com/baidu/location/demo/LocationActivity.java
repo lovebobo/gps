@@ -1,12 +1,28 @@
 package com.baidu.location.demo;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.baidu.baidulocationdemo.R;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.baidu.location.service.AbsHttpTask;
 import com.baidu.location.service.LocationService;
+import com.baidu.location.service.NetworkTask;
+import com.baidu.location.service.Utility;
 import com.baidu.location.service.infoData;
 
 import android.app.Activity;
@@ -16,6 +32,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.text.format.DateFormat;
@@ -43,6 +60,7 @@ public class LocationActivity extends Activity {
 	private Handler mHandler = new Handler();  
     SQLiteDatabase db;
     private ArrayList<infoData> gpsList=new ArrayList<infoData>();
+    private static NetworkTask taskPool = new NetworkTask();
     
 
 	@Override
@@ -62,13 +80,96 @@ public class LocationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				query(db);
+				query();
 			}
 		});
 		initSQL();
+		handler.postDelayed(runnable, 5000);
 
 	}
 
+	final Handler handler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+		}
+		
+	}; 
+	
+	Runnable runnable = new Runnable(){ 
+
+		@Override 
+		public void run() { 
+		// TODO Auto-generated method stub 
+			postData("http://222.197.181.28:5000/gpsdata");
+			handler.postDelayed(runnable, 5000); 
+		} 
+
+	}; 
+
+		
+	//传送数据
+	protected void postData(String GPSURL) {
+		// TODO Auto-generated method stub
+		gpsList.clear();
+		query();
+		JSONArray jsonArray = new JSONArray();
+		for (int i=0; i < gpsList.size(); i++) {
+	        jsonArray.put(gpsList.get(i).getJSONObject());
+		}
+		HashMap<String, String> localHashMap = new HashMap<String, String>();
+		
+		localHashMap.put(Utility.toUtf8("gpsdata"),jsonArray.toString());
+		
+		taskPool.addHttpPostTask(GPSURL, localHashMap,new AbsHttpTask() {
+			
+			@Override
+			public void onError(Object msg) {
+				// TODO Auto-generated method stub
+				Log.e("error"," " + msg);  
+			}
+			
+			@Override
+			public void onError() {
+				// TODO Auto-generated method stub
+				Log.e("error"," " + "upload_error");  
+			}
+			
+			@Override
+			public void onComplete(InputStream paramInputStream) {
+				// TODO Auto-generated method stub
+				//
+				String result = Utility.streamToString(paramInputStream);
+				if(result.indexOf("success")!=-1)				
+				{					
+						drop();//清空数据库
+						Log.e("result", "success");  
+				}
+				else{
+						Log.e("result_error", "error");  
+				}
+			}
+			
+		});	
+	}
+	
+	//String  to json
+		public static Object getNameFromJson(String result, String name)
+		{
+			try
+			{
+		   		JSONObject jsonObject = new JSONObject(result);
+			   	if(jsonObject != null)
+		   			return jsonObject.optString(name);
+			} catch (Exception e)
+			{
+			}
+			return null;
+		}
+	
 	/**
 	 * 显示请求字符串
 	 * 
@@ -84,6 +185,9 @@ public class LocationActivity extends Activity {
 	}
 
 	
+	
+
+
 	/***
 	 * Stop location service
 	 */
@@ -163,7 +267,9 @@ public class LocationActivity extends Activity {
 			}   
 		
 		//查询数据
-		private void query(SQLiteDatabase db) {   
+		private void query() {   
+			
+			db = openOrCreateDatabase("gps.db", Context.MODE_PRIVATE, null);
 			//查询获得游标   
 			Cursor cursor = db.query ("gps_table",null,null,null,null,null,null);   
 			//判断游标是否为空   

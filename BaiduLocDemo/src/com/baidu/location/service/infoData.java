@@ -1,5 +1,9 @@
 package com.baidu.location.service;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 public class infoData {
 
 	private String Longitude1;
@@ -13,7 +17,20 @@ public class infoData {
 	
 
 	
-
+	public JSONObject getJSONObject() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("Longitude1", Longitude1);
+            obj.put("latitude1", latitude1);
+            obj.put("UniqueID", UniqueID);
+            obj.put("time", time);
+            
+        } catch (JSONException e) {
+            
+        }
+        return obj;
+    }
+	
 	public infoData(String Longitude1,String latitude1,String UniqueID,String time)
 	{
 		this.Longitude1=Longitude1;
