@@ -141,8 +141,8 @@ public class MainActivity extends Activity {
 
 		List<String> data = new ArrayList<String>();
 		data.add("基础定位功能");
-		data.add("配置定位参数");
-		/*data.add("自定义回调示例");
+		/*data.add("配置定位参数");
+		data.add("自定义回调示例");
 		data.add("连续定位示例");
 		data.add("位置消息提醒");
 		data.add("常见问题说明");*/

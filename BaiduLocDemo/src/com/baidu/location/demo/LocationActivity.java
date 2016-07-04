@@ -84,7 +84,7 @@ public class LocationActivity extends Activity {
 			}
 		});
 		initSQL();
-		handler.postDelayed(runnable, 5000);
+		handler.postDelayed(runnable, 120000);
 
 	}
 
@@ -105,7 +105,7 @@ public class LocationActivity extends Activity {
 		public void run() { 
 		// TODO Auto-generated method stub 
 			postData("http://222.197.181.28:5000/gpsdata");
-			handler.postDelayed(runnable, 5000); 
+			handler.postDelayed(runnable, 120000); 
 		} 
 
 	}; 
